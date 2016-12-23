@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Python: Standard Deviation</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//thinkking.github.io/themes/ichi/favicon.ico">
+
+    <script type="text/javascript" src="//thinkking.github.io/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//thinkking.github.io/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="//thinkking.github.io/themes/ichi/assets/css/normalize.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//thinkking.github.io/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="//thinkking.github.io/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="//thinkking.github.io/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//thinkking.github.io/themes/ichi/assets/css/styles.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+
+    <link rel="canonical" href="http://thinkking.github.io/2015/05/09/000000-Python-Standard-Deviation.html" />
+    
+    <meta property="og:site_name" content="Ink.Well Labs | Christopher Lee Murray" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Python: Standard Deviation" />
+    <meta property="og:description" content="In statistics and probability theory, the standard deviation (SD) (represented by the Greek letter sigma, σ) measures the amount of variation or dispersion from the average. … yup, straight from Wikipedia. To fully understand this, lets look at the formula, then..." />
+    <meta property="og:url" content="http://thinkking.github.io/2015/05/09/000000-Python-Standard-Deviation.html" />
+    <meta property="og:image" content="http://thinkking.github.io/images/Math/StdDevi.jpg" />
+    <meta property="article:published_time" content="2015-05-09T05:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-07-23T10:11:11.421Z" />
+    <meta property="article:tag" content="python" />
+    <meta property="article:tag" content="scripts" />
+    <meta property="article:tag" content="programming" />
+    <meta property="article:tag" content="coding" />
+    <meta property="article:tag" content="mathematics" />
+    <meta property="article:tag" content="math functions" />
+    <meta property="article:tag" content="useful math" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Python: Standard Deviation" />
+    <meta name="twitter:description" content="In statistics and probability theory, the standard deviation (SD) (represented by the Greek letter sigma, σ) measures the amount of variation or dispersion from the average. … yup, straight from Wikipedia. To fully understand this, lets look at the formula, then..." />
+    <meta name="twitter:url" content="http://thinkking.github.io/2015/05/09/000000-Python-Standard-Deviation.html" />
+    <meta name="twitter:image:src" content="http://thinkking.github.io/images/Math/StdDevi.jpg" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Ink.Well Labs | Christopher Lee Murray",
+    "author": {
+        "@type": "Person",
+        "name": "Christopher Lee Murray",
+        "image": "https://avatars.githubusercontent.com/u/8236894?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": "http://thinkking.github.io/"
+    },
+    "headline": "Python: Standard Deviation",
+    "url": "http://thinkking.github.io/2015/05/09/000000-Python-Standard-Deviation.html",
+    "datePublished": "2015-05-09T05:00:00.000Z",
+    "dateModified": "2015-07-23T10:11:11.421Z",
+    "image": "http://thinkking.github.io/images/Math/StdDevi.jpg",
+    "keywords": "python,  scripts,  programming,  coding,  mathematics,  math functions,  useful math",
+    "description": "In statistics and probability theory, the standard deviation (SD) (represented by the Greek letter sigma, σ) measures the amount of variation or dispersion from the average. … yup, straight from Wikipedia. To fully understand this, lets look at the formula, then..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="Ink.Well Labs | Christopher Lee Murray" href="http://thinkking.github.io/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-python tag-scripts tag-programming tag-coding tag-mathematics tag-math-functions tag-useful-math">
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
+</div>
+
+<nav class="top-bar hide-for-large-up" data-topbar >
+  <ul class="title-area">
+    <li class="name">
+
+    </li>
+    <li class="home"><a class="fi-home" href="http://thinkking.github.io"></a></li>
+    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
+  </ul>
+
+<div class="overlay overlay-scale">
+    <button type="button" class="overlay-close">Close</button>
+    <nav>
+        <ul>
+            <li><a href="http://thinkking.github.io">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+</nav>
+
+<div class="row">
+
+<div class="small-16 medium-16 large-4 columns right head-area" >
+
+<header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <ul class="side-nav blog-menu show-for-large-up">
+                <li><a class="fi-home" href="http://thinkking.github.io"></a></li>
+                <li><a class="fi-torso" href="http://thinkking.github.io/about"></a></li>
+                <li><a class="fi-mail" href="http://thinkking.github.io/contact"></a></li>
+            </ul>
+            <a class="blog-logo" href="http://thinkking.github.io"><img alt="Ink.Well Labs | Christopher Lee Murray" src="http://static.tumblr.com/9bef4d348c649484bd8f7e55441d8feb/fwivhj6/QMfnh50mr/tumblr_static_3as8fvs5oiec0844g0o444088.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title">Ink.Well Labs | Christopher Lee Murray</h1>
+            <hr>
+            <p class="blog-description">./think/ink/interlink# _</p>
+            <div class="blog-network">
+<!--                 <a href="#" class="fi-social-pinterest"></a>
+                <a href="#" class="fi-social-linkedin"></a>
+                <a href="#" class="fi-social-behance"></a>
+                <a href="#" class="fi-social-deviant-art"></a>
+                <a href="#" class="fi-social-dribbble"></a>
+                <a href="#" class="fi-social-flickr"></a>
+                <a href="#" class="fi-social-github"></a>
+                <a href="#" class="fi-social-skype"></a>
+                <a href="#" class="fi-social-snapchat"></a>
+                <a href="#" class="fi-social-steam"></a>
+                <a href="#" class="fi-social-xbox"></a>
+                <a href="#" class="fi-social-reddit"></a> -->
+                  <a href="https://google.com/+ChristopherLeeMurray" class="fi-social-google-plus"></a>
+                  <a href="https://github.com/thinkking/thinkking.github.io" class="fi-social-github"></a>
+                  <a href="https://twitter.com/LeeThinkking" class="fi-social-twitter"></a>
+                  <a href="https://facebook.com/lee.christopher.murray" class="fi-social-facebook"></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+</div>
+
+
+<div class="small-16 medium-16 large-12 columns main-column left">
+    
+
+<main class="content" role="main">
+
+    <article class="post tag-python tag-scripts tag-programming tag-coding tag-mathematics tag-math-functions tag-useful-math">
+
+
+            <h1 class="post-title">Python: Standard Deviation</h1>
+
+            <span class="post-meta label"><time datetime="2015-05-09">09 May 2015</time></span>
+
+            <section class="post-content">
+                <div class="paragraph">
+<p>In statistics and probability theory, the standard deviation (SD) (represented by the Greek letter sigma, σ) measures the amount of variation or dispersion from the average.</p>
+</div>
+<div class="paragraph">
+<p>… yup, straight from Wikipedia.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://www.socialresearchmethods.net/kb/Assets/images/statdes3.gif" alt="statdes3.gif">
+</div>
+</div>
+<div class="paragraph">
+<p>To fully understand this, lets look at the formula, then some code for it.</p>
+</div>
+<div class="paragraph">
+<p>So, breaking it down, the Standard Deviation is a measure of how spread out numbers are. It is the square root of the Variance. Variance is just the squared differences from the Mean… Yes, the mean is just a fancy way of saying average.</p>
+</div>
+<div class="paragraph">
+<p>So, let’s code this!</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">def stdev(s):
+    import math
+    def average(s):
+       return sum(s) * (1.0 / len(s))
+    avg = average(s)
+    variance = map(lambda x: (x - avg)**2, s)
+    standard_deviation = squareroot(average(variance))
+    return ("The mean is, ", avg, ". The Standard Deviation is ", standard_deviation)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Like we Said in previous posts, we try to stay away from Python built in functions(the math libraries at least). So, Let’s code the Square Root function.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">def goodenough(g,dvalue):
+    d=abs(g**2-dvalue)
+    return (d&lt;0.0001)
+
+def average(d,e):
+    return (d+e)/2.0
+
+def improve(g,dvalue):
+    return average(g,dvalue/g)
+
+def improveloop(g,dvalue):
+    if (goodenough(g,dvalue)):
+       return g
+    else:
+       return improveloop(improve(g,dvalue),dvalue)
+
+def squareroot(f):
+    return improveloop(1.0,f)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>built in average and sum functions are easy to emulate so we avoided rewritting them. they aim of rewritting is to tear down complexity to better understand how the language can be used</em></p>
+</div>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="http://thinkking.github.io/tag/python">python</a>, <a href="http://thinkking.github.io/tag/scripts"> scripts</a>, <a href="http://thinkking.github.io/tag/programming"> programming</a>, <a href="http://thinkking.github.io/tag/coding"> coding</a>, <a href="http://thinkking.github.io/tag/mathematics"> mathematics</a>, <a href="http://thinkking.github.io/tag/math-functions"> math functions</a>, <a href="http://thinkking.github.io/tag/useful-math"> useful math</a></aside>
+            </section>
+            <hr>
+            <footer class="post-footer">
+
+                <section class="share">
+                    <h4>Liked this post ? Share it.</h4>
+                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://thinkking.github.io/2015/05/09/000000-Python-Standard-Deviation.html"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    </a>
+                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Python%3A%20Standard%20Deviation&amp;url=http://thinkking.github.io/2015/05/09/000000-Python-Standard-Deviation.html"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    </a>
+                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=http://thinkking.github.io/2015/05/09/000000-Python-Standard-Deviation.html"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    </a>
+                </section>
+
+                <section class="author">
+                    <header>
+                        <span>About the author</span>
+                    </header>
+                    <section>
+                        <h4>Christopher Lee Murray</h4>
+                        <img src="https://avatars.githubusercontent.com/u/8236894?v=3">
+                        
+                        <a href="http://thinkking.github.io/">http://thinkking.github.io/</a>
+                    </section>
+                    <footer>
+                         <p></p>
+                    </footer>
+                </section>
+
+        <div class="clearfix"></div>
+                    <hr>
+
+            </footer>
+
+        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
+
+
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'inkwelllabs'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+</div>
+
+</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="//thinkking.github.io/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//thinkking.github.io/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
+
+    <script>
+      $(document).foundation();
+    </script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'googled4fa0686cf1c5139', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
