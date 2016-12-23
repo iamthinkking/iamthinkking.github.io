@@ -4,7 +4,14 @@
     "repositoryName": "iamthinkking.github.io",
     "branch": "master"
   },
+  "site": {},
+  "socialnetwork": {
+    "email": "lee.christopher.murray@gmail.com",
+    "twitter": "iamthinkking",
+    "instagram": "iamthinkking",
+    "github": "iamthinkking"
+  },
   "theme": {
-    "name": "Ichi"
+    "name": "ichi"
   }
 }
