@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Christopher Lee Murray]]></title><description><![CDATA[~/think/interlink/ink/_]]></description><link>https://iamthinkking.github.io</link><generator>RSS for Node</generator><lastBuildDate>Fri, 23 Dec 2016 23:10:10 GMT</lastBuildDate><atom:link href="https://iamthinkking.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Terminal: WiFi Password]]></title><description><![CDATA[<div class="paragraph">
+<p>As a budding Linux Engineer I have found that the command line is often a very useful tool. You can get information faster and with greater detail. Often times for the information needed, there is no app with a GUI to provide it. Knowing a decent amount of commands, improves performance and efficiency by a great deal.</p>
+</div>
+<div class="paragraph">
+<p>One particular example of this is my constant need to retrieve the WiFi passwords of the networks I have already connected to. Of course, storing them in a file is a good way to keep them, but it is also a redundant method, due to linux systems already storing them in files.</p>
+</div>
+<div class="paragraph">
+<p>I have utilized the command line to get the desired output. However, it would be time consuming and strenuous to be typing a lengthy command multiple times per day, even if I were to press ⬆ to travel through my terminal&#8217;s history or do <code>history | grep [name of word in command here]</code> to filter the list of recently entered commands. A beautiful solution to this is simply to use the <code>alias</code> command to store frequently used commands and comand combinations. Below is the result of my contemplations. I will explain them after. It is worth mentioning that the directories/paths we are accessing requires <strong>superuser</strong> privileges, so tread carefully.</p>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">wifipass, on fedora25</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">alias wifipass="{(sudo ls /etc/sysconfig/network-scripts/ | grep 'keys-') &amp;&amp; (sudo cat /etc/sysconfig/network-scripts/keys-*)} | pr --column 2 -Tt"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In Fedora, the network passwords (PSK or Pre-Shared Key) is stored in separate files for each network. However, the network name (SSID, or Service Set IDentifier) is within the filename itself, prefixed by <code>keys-</code>. The first part of the command (<code>sudo ls /etc/sysconfig/network-scripts/ | grep 'keys-')</code>) is to retrieve the existing SSIDs, the second part of the script (<code>sudo cat /etc/sysconfig/network-scripts/keys-*</code>) is to retrieve the PSKs of each network. As the directory tree is traversed the order will remain consistent, therefore the order the SSIDs are returned is the same order the PSKs will be returned. However, the SSIDs will be listed first then the PSKs. Because of this we use <code>pr</code> to format the text into 2 columns. The <code>2</code> is the number of columns and the <code>-Tt</code> are the two options passed which omit pagination and omit the header respectively.</p>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">wifipass, on ubuntu16.10</div>
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">alias wifipass="sudo cat /etc/NetworkManager/system-connections/* | grep -e ssid -e psk"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In Ubuntu, all network configuration is stored inside separate files but the SSIDs are in the respective files, along with the PSKs. This allows us to retrieve what we need with a bit less hassle. Therefore, the command retrieves all the text in each file then filters for lines containing only <code>ssisd</code> and <code>psk</code>.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Often times the information needed, there is no app with a GUI to provide it.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Christopher Lee Murray
+</div>
+</div>
+<div class="paragraph">
+<p>NB:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>alias</code> is used to store commands that you often use to make your CLI life easier.</p>
+</li>
+<li>
+<p><code>*</code> is the "wildcard" symbol which I will speak on more in a REGEX post later.</p>
+</li>
+<li>
+<p>Should you need to store these commands permanently (to used them after every boot) then you would need to store them in your <code>~/.bashrc</code> or your <code>~/.zhrc</code> file depending on your shell/</p>
+</li>
+</ul>
+</div>]]></description><link>https://iamthinkking.github.io/2016/12/23/Terminal-WiFi-Password.html</link><guid isPermaLink="true">https://iamthinkking.github.io/2016/12/23/Terminal-WiFi-Password.html</guid><category><![CDATA[fedora]]></category><category><![CDATA[ ubuntu]]></category><category><![CDATA[ linux]]></category><category><![CDATA[ wifi]]></category><category><![CDATA[ password]]></category><category><![CDATA[ alias]]></category><category><![CDATA[ cli]]></category><category><![CDATA[ terminal]]></category><dc:creator><![CDATA[Christopher Lee Murray]]></dc:creator><pubDate>Fri, 23 Dec 2016 00:00:00 GMT</pubDate></item></channel></rss>
