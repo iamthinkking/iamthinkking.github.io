@@ -4,7 +4,11 @@
     "repositoryName": "iamthinkking.github.io",
     "branch": "master"
   },
-  "site": {},
+  "site": {
+    "title": "Christopher Lee Murray",
+    "description": "~/think/interlink/ink/_",
+    "postsPerPage": "8"
+  },
   "socialnetwork": {
     "email": "lee.christopher.murray@gmail.com",
     "twitter": "iamthinkking",
