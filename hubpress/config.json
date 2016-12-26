@@ -7,7 +7,8 @@
   "site": {
     "title": "Christopher Lee Murray",
     "description": "~/think/interlink/ink/_",
-    "postsPerPage": "8"
+    "postsPerPage": "8",
+    "disqus": "iamthinkking"
   },
   "socialnetwork": {
     "email": "lee.christopher.murray@gmail.com",
