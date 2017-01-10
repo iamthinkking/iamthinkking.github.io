@@ -31,7 +31,7 @@ For me, `synapse --display=:0` worked just fine.
      * ensure you have **GNOME Tweak Tool** installed. *Install it using `sudo dnf install gnome-tweak-tool` or install it from the **Software** application*. 
      * Then navigate: Tweak Tool>Startup Applications>➕. Search for Synapse then click "Add".
 
- 3. Navigate Settings>Keyboard>➕. Enter Name: "Synapse", Command: "synapse --display=:0", Shortcut: [Whatever keyboard shortcut you desire.
+ 3. Navigate Settings>Keyboard>➕. Enter Name: "Synapse", Command: "synapse --display=:0", Shortcut: [Whatever keyboard shortcut you desire].
  
 This should suffice as a solution until a patch is made.
 
