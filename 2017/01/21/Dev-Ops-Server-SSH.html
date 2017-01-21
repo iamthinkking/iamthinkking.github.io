@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>DevOps: Server SSH</title>
+    <meta name="description" content="" />
+    <link href="//fonts.googleapis.com/css?family=Noto+Sans:300,400,700" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic" rel="stylesheet" type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="//iamthinkking.github.io/themes/saga/assets/css/style.css?v=1485026243107" rel="stylesheet" type="text/css">
+    <link href="//iamthinkking.github.io/themes/saga/assets/css/animate.min.css?v=1485026243107" rel="stylesheet" type="text/css">
+    <link href="https://iamthinkking.github.io/favicon.ico" rel="shortcut icon">
+    <link rel="canonical" href="https://iamthinkking.github.io/2017/01/21/Dev-Ops-Server-SSH.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="Christopher Lee Murray" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="DevOps: Server SSH" />
+    <meta property="og:description" content="The Problem Generally, it is good to practise systems administration skills especially when persuing a career in linux. Today I set out to install a two virtual machines(VM) (ubuntu server 16.10 and fedora server 25), then install on open ERP on them both. The ERP chosen is Odoo." />
+    <meta property="og:url" content="https://iamthinkking.github.io/2017/01/21/Dev-Ops-Server-SSH.html" />
+    <meta property="article:tag" content="fedora" />
+    <meta property="article:tag" content=" linux" />
+    <meta property="article:tag" content=" sysadmin" />
+    <meta property="article:tag" content=" administrator" />
+    <meta property="article:tag" content=" devops" />
+    <meta property="article:tag" content=" ssh" />
+    <meta property="article:tag" content=" secure" />
+    <meta property="article:tag" content=" systemadministrator" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="DevOps: Server SSH" />
+    <meta name="twitter:description" content="The Problem Generally, it is good to practise systems administration skills especially when persuing a career in linux. Today I set out to install a two virtual machines(VM) (ubuntu server 16.10 and fedora server 25), then install on open ERP on them both. The ERP chosen is Odoo." />
+    <meta name="twitter:url" content="https://iamthinkking.github.io/2017/01/21/Dev-Ops-Server-SSH.html" />
+    
+    <script type="application/ld+json">
+null
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="Christopher Lee Murray" href="https://iamthinkking.github.io/rss/" />
+</head>
+<body class="post-template tag-fedora tag-linux tag-sysadmin tag-administrator tag-devops tag-ssh tag-secure tag-systemadministrator">
+    <header id="header" class="animated fadeIn">
+    <div class="header-background">
+    <section class="blog-content">
+        <a id="site-url" class="blog-title" href="https://iamthinkking.github.io">Christopher Lee Murray</a>
+        <span class="blog-description">~/think/interlink/ink/_</span>
+        <nav class="links fadeIn animated">
+            <ul>
+                <li class="rss"><a title="RSS Feed" href="/rss/"><i class="fa fa-fw fa-rss-square"></i></a></li>
+        
+            </ul>
+        </nav>
+    </section>
+    <section class="header-content">
+        <h1 class="post-title animated fadeInUp">DevOps: Server SSH</h1>
+        <span class="post-data"><span class="date animated fadeInUp"><i class="fa fa-clock-o"></i> <time class="timesince date" data-timesince="1484974800" datetime="2017-01-21T00:00" title="21 January 2017">14 hours ago</time></span>
+            <span class="tags animated fadeInUp"><i class="fa fa-tags"></i> <a href="https://iamthinkking.github.io/tag/fedora/">fedora</a>, <a href="https://iamthinkking.github.io/tag/linux/"> linux</a>, <a href="https://iamthinkking.github.io/tag/sysadmin/"> sysadmin</a>, <a href="https://iamthinkking.github.io/tag/administrator/"> administrator</a>, <a href="https://iamthinkking.github.io/tag/devops/"> devops</a>, <a href="https://iamthinkking.github.io/tag/ssh/"> ssh</a>, <a href="https://iamthinkking.github.io/tag/secure/"> secure</a>, <a href="https://iamthinkking.github.io/tag/systemadministrator/"> systemadministrator</a></span>
+            <span class="author animated fadeInUp"><i class="fa fa-user"></i> <a href="https://iamthinkking.github.io/author/iamthinkking/">Christopher Lee Murray</a></span></span>
+    </section>
+    </div>
+</header>
+<main id="main" class="content">
+    <article itemtype="http://schema.org/BlogPosting" class="animated fadeIn content post post tag-fedora tag-linux tag-sysadmin tag-administrator tag-devops tag-ssh tag-secure tag-systemadministrator">
+        <section class="post-content">
+            <div class="sect1">
+<h2 id="_the_problem">The Problem</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Generally, it is good to practise systems administration skills especially when persuing a career in linux. Today I set out to install a two virtual machines(VM) (ubuntu server 16.10 and fedora server 25), then install on open ERP on them both. The ERP chosen is <a href="https://www.odoo.com/">Odoo</a>. I am using GNOME Boxes as it is simple enough to spin up a VM quickly. Also, GNOME Boxes uses KVM, as the hypervisor, and QMENU, as the machine emulator.
+Unfortunately copying and pasting strings into GNOME Boxes&#8217;s emulator just wasn&#8217;t happening. So, I opted to ssh into the servers instead.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_solution">The Solution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To SSH into a server, you want to be able to do it as securely as possible, why else would you be using a Secure Socket Shell to interface anything? So both ends of the communication channel need to have a key to state that, indeed, they are who they claim to be. It&#8217;s like entering a secret club but having to say a special phrase first. Both you and the individual behind the door need to know the passphrase. So here&#8217;s how to do that:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Generate an RSA key pair by typing the following at a shell prompt:</p>
+<div class="literalblock">
+<div class="content">
+<pre>~]$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/john/.ssh/id_rsa):</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Press Enter to confirm the default location (that is, ~/.ssh/id_rsa) for the newly created key.
+Enter a passphrase, and confirm it by entering it again when prompted to do so. For security reasons, avoid using the same password as you use to log in to your account.
+After this, you will be presented with a message similar to this:</p>
+<div class="literalblock">
+<div class="content">
+<pre>Your identification has been saved in /home/john/.ssh/id_rsa.
+Your public key has been saved in /home/john/.ssh/id_rsa.pub.
+The key fingerprint is:
+e7:97:c7:e2:0e:f9:0e:fc:c4:d7:cb:e5:31:11:92:14 john@penguin.example.com
+The key's randomart image is:
++--[ RSA 2048]----+
+|             E.  |
+|            . .  |
+|             o . |
+|              . .|
+|        S .    . |
+|         + o o ..|
+|          * * +oo|
+|           O +..=|
+|           o*  o.|
++-----------------+</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Change the permissions of the ~/.ssh/ directory:
+<code>`
+~]$ chmod 755 ~/.ssh
+</code>`</p>
+</li>
+<li>
+<p>Copy the content of ~/.ssh/id_rsa.pub into the ~/.ssh/authorized_keys on the machine to which you want to connect, appending it to its end if the file already exists.</p>
+</li>
+<li>
+<p>Change the permissions of the ~/.ssh/authorized_keys file using the following command:
+<code>`
+~]$ chmod 644 ~/.ssh/authorized_keys
+</code>`</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now that we have generated and shared our SSH key, we will need to install <code>openssh-server</code> on our local machine so port 22 will be opened for us to us as our tunnel of communication.</p>
+</div>
+<div class="paragraph">
+<p><strong>NB: This <code>dnf</code> is for fedora, use <code>apt-get</code> if you&#8217;re on ubuntu:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Installing openSSH Server:</p>
+<div class="literalblock">
+<div class="content">
+<pre>dnf install openssh-server</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check to ensure port 22 is opened</p>
+<div class="literalblock">
+<div class="content">
+<pre>netstat -ant | grep 22</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Time to SSH into our server:</p>
+<div class="literalblock">
+<div class="content">
+<pre>ssh -p 22 [username]@[ip_address]</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now we have successfully SSH&#8217;d into our server @smile😃</p>
+</div>
+<hr>
+<div class="ulist footer">
+<ul class="footer">
+<li>
+<p>This has been tested on fedora 25, using GNOME Boxes, and terminix. There shouldn&#8217;t be any great differences on other platforms/environments.</p>
+</li>
+<li>
+<p>I will do a post about Odoo very soon.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+    
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'iamthinkking'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+    
+    </article>
+
+</main>
+    <footer class="animated fadeIn" id="footer">
+        <section class="colophon">
+          <section class="copyright">Copyright &copy; <span itemprop="copyrightHolder">Christopher Lee Murray</span>. <span rel="license">All Rights Reserved</span>.</section>
+          <section class="poweredby">Published with <a class="icon-ghost" href="http://hubpress.io">HubPress</a></section>
+        </section>
+        <section class="bottom">
+          <section class="attribution">
+            <a href="http://github.com/Reedyn/Saga">Built with <i class="fa fa-heart"></i> and Free and Open-Source Software</a>.
+          </section>
+        </section>
+    </footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+    <script src="//iamthinkking.github.io/themes/saga/assets/js/scripts.js?v=1485026243107"></script>
+    
+</body>
+</html>
