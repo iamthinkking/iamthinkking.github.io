@@ -9,7 +9,7 @@ One of the tools I've constantly used when on a Linux distribution is https://la
 - https://www.reddit.com/r/Fedora/comments/5j31sd/synapse_on_fedora_25_fails_with_segmentation/
 - https://bugs.launchpad.net/synapse-project/+bug/1592008
 
-Unfotunately everyone was complaining, but no solution.
+Unfortunately everyone was complaining, but no solution.
 
 ## The Solution
 
