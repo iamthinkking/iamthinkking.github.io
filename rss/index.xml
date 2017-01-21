@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Christopher Lee Murray]]></title><description><![CDATA[~/think/interlink/ink/_]]></description><link>https://iamthinkking.github.io</link><image><url>http://thinkking.gitlab.io/img/profile.png</url><title>Christopher Lee Murray</title><link>https://iamthinkking.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Sat, 21 Jan 2017 19:22:38 GMT</lastBuildDate><atom:link href="https://iamthinkking.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[DevOps: Server SSH]]></title><description><![CDATA[<div class="sect1">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Christopher Lee Murray]]></title><description><![CDATA[~/think/interlink/ink/_]]></description><link>https://iamthinkking.github.io</link><image><url>http://thinkking.gitlab.io/img/profile.png</url><title>Christopher Lee Murray</title><link>https://iamthinkking.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Sat, 21 Jan 2017 19:34:12 GMT</lastBuildDate><atom:link href="https://iamthinkking.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[DevOps: Server SSH]]></title><description><![CDATA[<div class="sect1">
 <h2 id="_the_problem">The Problem</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -13,25 +13,34 @@ Unfortunately copying and pasting strings into GNOME Boxes&#8217;s emulator just
 <div class="paragraph">
 <p>To SSH into a server, you want to be able to do it as securely as possible, why else would you be using a Secure Socket Shell to interface anything? So both ends of the communication channel need to have a key to state that, indeed, they are who they claim to be. It&#8217;s like entering a secret club but having to say a special phrase first. Both you and the individual behind the door need to know the passphrase. So here&#8217;s how to do that:</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
 <p>Generate an RSA key pair by typing the following at a shell prompt:</p>
-<div class="literalblock">
-<div class="content">
-<pre>~]$ ssh-keygen -t rsa
-Generating public/private rsa key pair.
-Enter file in which to save the key (/home/john/.ssh/id_rsa):</pre>
-</div>
-</div>
 </li>
+</ul>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">in your terminal</div>
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ssh-keygen -t rsa
+ Generating public/private rsa key pair.
+ Enter file in which to save the key (/home/john/.ssh/id_rsa):</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Press Enter to confirm the default location (that is, ~/.ssh/id_rsa) for the newly created key.
 Enter a passphrase, and confirm it by entering it again when prompted to do so. For security reasons, avoid using the same password as you use to log in to your account.
 After this, you will be presented with a message similar to this:</p>
-<div class="literalblock">
+</li>
+</ul>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">in your terminal</div>
 <div class="content">
-<pre>Your identification has been saved in /home/john/.ssh/id_rsa.
+<pre class="highlight"><code class="language-shell" data-lang="shell">Your identification has been saved in /home/john/.ssh/id_rsa.
 Your public key has been saved in /home/john/.ssh/id_rsa.pub.
 The key fingerprint is:
 e7:97:c7:e2:0e:f9:0e:fc:c4:d7:cb:e5:31:11:92:14 john@penguin.example.com
@@ -46,60 +55,82 @@ The key's randomart image is:
 |          * * +oo|
 |           O +..=|
 |           o*  o.|
-+-----------------+</pre>
++-----------------+</code></pre>
 </div>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Change the permissions of the ~/.ssh/ directory:</p>
+</li>
+</ul>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">in your terminal</div>
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">chmod 755 ~/.ssh</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the content of <code>~/.ssh/id_rsa.pub</code> into the <code>~/.ssh/authorized_keys</code> on the machine to which you want to connect, appending it to its end if the file already exists.</p>
 </li>
 <li>
-<p>Change the permissions of the ~/.ssh/ directory:
-<code>`
-~]$ chmod 755 ~/.ssh
-</code>`</p>
+<p>Change the permissions of the <code>~/.ssh/authorized_keys</code> file using the following command:</p>
 </li>
-<li>
-<p>Copy the content of ~/.ssh/id_rsa.pub into the ~/.ssh/authorized_keys on the machine to which you want to connect, appending it to its end if the file already exists.</p>
-</li>
-<li>
-<p>Change the permissions of the ~/.ssh/authorized_keys file using the following command:
-<code>`
-~]$ chmod 644 ~/.ssh/authorized_keys
-</code>`</p>
-</li>
-</ol>
+</ul>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">in your terminal</div>
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">chmod 644 ~/.ssh/authorized_keys</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Now that we have generated and shared our SSH key, we will need to install <code>openssh-server</code> on our local machine so port 22 will be opened for us to us as our tunnel of communication.</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Installing openSSH Server:</p>
+</li>
+</ul>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">in your terminal</div>
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">dnf install openssh-server</code></pre>
+</div>
+</div>
 <div class="paragraph">
 <p><strong>NB: This <code>dnf</code> is for fedora, use <code>apt-get</code> if you&#8217;re on ubuntu:</strong></p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Installing openSSH Server:</p>
-<div class="literalblock">
-<div class="content">
-<pre>dnf install openssh-server</pre>
-</div>
-</div>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p>Check to ensure port 22 is opened</p>
-<div class="literalblock">
-<div class="content">
-<pre>netstat -ant | grep 22</pre>
-</div>
-</div>
 </li>
+</ul>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">in your terminal</div>
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">netstat -ant | grep 22</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Time to SSH into our server:</p>
-<div class="literalblock">
-<div class="content">
-<pre>ssh -p 22 [username]@[ip_address]</pre>
-</div>
-</div>
 </li>
-</ol>
+</ul>
+</div>
+<div id="app-listing" class="listingblock">
+<div class="title">in your terminal</div>
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ssh -p 22 [username]@[ip_address]</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Now we have successfully SSH&#8217;d into our server @smile😃</p>
