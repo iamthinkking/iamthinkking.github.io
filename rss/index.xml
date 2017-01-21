@@ -1,24 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Christopher Lee Murray]]></title><description><![CDATA[~/think/interlink/ink/_]]></description><link>https://iamthinkking.github.io</link><image><url>http://thinkking.gitlab.io/img/profile.png</url><title>Christopher Lee Murray</title><link>https://iamthinkking.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Sat, 21 Jan 2017 18:36:24 GMT</lastBuildDate><atom:link href="https://iamthinkking.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Fedora25: Synapse and Your Display Server]]></title><description><![CDATA[<div class="sect1">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Christopher Lee Murray]]></title><description><![CDATA[~/think/interlink/ink/_]]></description><link>https://iamthinkking.github.io</link><image><url>http://thinkking.gitlab.io/img/profile.png</url><title>Christopher Lee Murray</title><link>https://iamthinkking.github.io</link></image><generator>RSS for Node</generator><lastBuildDate>Sat, 21 Jan 2017 19:17:23 GMT</lastBuildDate><atom:link href="https://iamthinkking.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[DevOps: Server SSH]]></title><description><![CDATA[<div class="sect1">
 <h2 id="_the_problem">The Problem</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>One of the tools I&#8217;ve constantly used when on a Linux distribution is <a href="https://launchpad.net/synapse-project">Synapse</a>. It&#8217;s a really fast application launcher. I&#8217;ve tried <a href="https://github.com/ManuelSchneid3r/albert">albert</a> and others but none have pleased me as much. Since I switched to Fedora25 back in December 2016, I&#8217;ve been using GNOME&#8217;s built in search which resides in the dashboard. It suffices but the rendering required can cause it to be a bit laggy when resources are being hogged (especially by Chome 😢). So I&#8217;ve decided to install Synapse. Unfortunately after installing, it wouldn&#8217;t launch from the application menu. I opened Terminix and typed <code>synapse</code> only to see it crash from a segmentation fault 🤐. I decided to Google search the issue and came across these links:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://ask.fedoraproject.org/en/question/98598/i-get-a-segmentation-fault-when-starting-synapse-on-fedora-25-what-to-do/" class="bare">https://ask.fedoraproject.org/en/question/98598/i-get-a-segmentation-fault-when-starting-synapse-on-fedora-25-what-to-do/</a></p>
-</li>
-<li>
-<p><a href="https://www.reddit.com/r/Fedora/comments/5j31sd/synapse_on_fedora_25_fails_with_segmentation/" class="bare">https://www.reddit.com/r/Fedora/comments/5j31sd/synapse_on_fedora_25_fails_with_segmentation/</a></p>
-</li>
-<li>
-<p><a href="https://bugs.launchpad.net/synapse-project/+bug/1592008" class="bare">https://bugs.launchpad.net/synapse-project/+bug/1592008</a></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Unfortunately everyone was complaining, but no solution.</p>
+<p>Generally, it is good to practise systems administration skills especially when persuing a career in linux. Today I set out to install a two virtual machines(VM) (ubuntu server 16.10 and fedora server 25), then install on open ERP on them both. The ERP chosen is <a href="https://www.odoo.com/">Odoo</a>. I am using GNOME Boxes as it is simple enough to spin up a VM quickly. Also, GNOME Boxes uses KVM, as the hypervisor, and QMENU, as the machine emulator.
+Unfortunately copying and pasting strings into GNOME Boxes&#8217;s emulator just wasn&#8217;t happening. So, I opted to ssh into the servers instead.</p>
 </div>
 </div>
 </div>
@@ -26,72 +11,230 @@
 <h2 id="_the_solution">The Solution</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>I figured it was synapse trying to access memory or a stream that doesn&#8217;t exist. So I checked <code>syanpse -h</code> to see what options are available. One of the options available to use <code>--display</code>. You can get synapse to successfully start by the following steps.</p>
+<p>To SSH into a server, you want to be able to do it as securely as possible, why else would you be using a Secure Socket Shell to interface anything? So both ends of the communication channel need to have a key to state that, indeed, they are who they claim to be. It&#8217;s like entering a secret club but having to say a special phrase first. Both you and the individual behind the door need to know the passphrase. So here&#8217;s how to do that:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>check the location of the displays you have available: <code>cd /tmp/.X11-unix &amp;&amp; for x in X*; do echo ":${x#X}"; done</code></p>
-</li>
-<li>
-<p>then, from the locations listed, try using any as arguments to the <code>--display</code> option.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>For me, <code>synapse --display=:0</code> worked just fine.</p>
-</div>
-<div class="paragraph">
-<p><strong>NB: This allows you to manually launch synapse. However, you MAY want to ensure that:</strong></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>When you start synapse from the application menu it launches with the options you desire.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>append ` --display=:0` to the end of <code>Exec=synapse</code> in the file <code>/usr/share/applications/synapse.desktop</code>.</p>
-</li>
-<li>
-<p>You WILL need <strong>sudo</strong> access to do this. <strong>Be mindful of the space in the string you will be appending.</strong></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>If it&#8217;s autostarted from your startup it is launched with the options you desire.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>ensure you have <strong>GNOME Tweak Tool</strong> installed. <strong>Install it using <code>sudo dnf install gnome-tweak-tool</code> or install it from the <strong>Software</strong> application</strong>.</p>
-</li>
-<li>
-<p>Then navigate: Tweak Tool&gt;Startup Applications&gt;➕. Search for Synapse then click "Add".</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Navigate Settings&gt;Keyboard&gt;➕. Enter Name: "Synapse", Command: "synapse --display=:0", Shortcut: [Whatever keyboard shortcut you desire].</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>This should suffice as a solution until a patch is made.</p>
-</div>
-<div class="paragraph">
-<p>This has been tested on fedora 25. Provide feedback as to whether it works on other distributions that are returning</p>
-</div>
-<div class="listingblock">
+<p>Generate an RSA key pair by typing the following at a shell prompt:</p>
+<div class="literalblock">
 <div class="content">
-<pre class="highlight"><code>[INFO 10:45:12.413170] [synapse-main:266] Starting up...
-[INFO 10:45:12.625883] [synapse-main:208] Binding activation to &lt;Control&gt;space
-[1]    27269 segmentation fault (core dumped)  synapse</code></pre>
+<pre>~]$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/john/.ssh/id_rsa):</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Press Enter to confirm the default location (that is, ~/.ssh/id_rsa) for the newly created key.
+Enter a passphrase, and confirm it by entering it again when prompted to do so. For security reasons, avoid using the same password as you use to log in to your account.
+After this, you will be presented with a message similar to this:</p>
+<div class="literalblock">
+<div class="content">
+<pre>Your identification has been saved in /home/john/.ssh/id_rsa.
+Your public key has been saved in /home/john/.ssh/id_rsa.pub.
+The key fingerprint is:
+e7:97:c7:e2:0e:f9:0e:fc:c4:d7:cb:e5:31:11:92:14 john@penguin.example.com
+The key's randomart image is:
++--[ RSA 2048]----+
+|             E.  |
+|            . .  |
+|             o . |
+|              . .|
+|        S .    . |
+|         + o o ..|
+|          * * +oo|
+|           O +..=|
+|           o*  o.|
++-----------------+</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Change the permissions of the ~/.ssh/ directory:
+<code>`
+~]$ chmod 755 ~/.ssh
+</code>`</p>
+</li>
+<li>
+<p>Copy the content of ~/.ssh/id_rsa.pub into the ~/.ssh/authorized_keys on the machine to which you want to connect, appending it to its end if the file already exists.</p>
+</li>
+<li>
+<p>Change the permissions of the ~/.ssh/authorized_keys file using the following command:
+<code>`
+~]$ chmod 644 ~/.ssh/authorized_keys
+</code>`</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now that we have generated and shared our SSH key, we will need to install <code>openssh-server</code> on our local machine so port 22 will be opened for us to us as our tunnel of communication.</p>
+</div>
+<div class="paragraph">
+<p><strong>NB: This <code>dnf</code> is for fedora, use <code>apt-get</code> if you&#8217;re on ubuntu:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Installing openSSH Server:</p>
+<div class="literalblock">
+<div class="content">
+<pre>dnf install openssh-server</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check to ensure port 22 is opened</p>
+<div class="literalblock">
+<div class="content">
+<pre>netstat -ant | grep 22</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Time to SSH into our server:</p>
+<div class="literalblock">
+<div class="content">
+<pre>ssh -p 22 [username]@[ip_address]</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now we have successfully SSH&#8217;d into our server @smile😃</p>
+</div>
+<hr>
+<div class="ulist footer">
+<ul class="footer">
+<li>
+<p>This has been tested on fedora 25, using GNOME Boxes, and terminix. There shouldn&#8217;t be any great differences on other platforms/environments.</p>
+</li>
+<li>
+<p>I will do a post about Odoo very soon.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>]]></description><link>https://iamthinkking.github.io/2017/01/21/Dev-Ops-Server-SSH.html</link><guid isPermaLink="true">https://iamthinkking.github.io/2017/01/21/Dev-Ops-Server-SSH.html</guid><category><![CDATA[fedora]]></category><category><![CDATA[ linux]]></category><category><![CDATA[ sysadmin]]></category><category><![CDATA[ administrator]]></category><category><![CDATA[ devops]]></category><category><![CDATA[ ssh]]></category><category><![CDATA[ secure]]></category><category><![CDATA[ systemadministrator]]></category><dc:creator><![CDATA[Christopher Lee Murray]]></dc:creator><pubDate>Sat, 21 Jan 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[DevOps: Server SSH]]></title><description><![CDATA[<div class="sect1">
+<h2 id="_the_problem">The Problem</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Generally, it is  good to practise systems administration skills especially when persuing a career in linux. Today I set out to install a two virtual machines(VM) (ubuntu server 16.10 and fedora server 25), then install on open ERP on them both. The ERP chosen is <a href="https://www.odoo.com/">Odoo</a>. I am using GNOME Boxes as it is simple enough to spin up a VM quickly. Also, GNOME Boxes uses KVM, as the hypervisor, and QMENU, as the machine emulator.
+Unfortunately copying and pasting strings into GNOME Boxes&#8217;s emulator just wasn&#8217;t happening. So, I opted to ssh into the servers instead.</p>
 </div>
 </div>
 </div>
-</div>]]></description><link>https://iamthinkking.github.io/2017/01/10/Fedora25-Synapse-and-Your-Display-Server.html</link><guid isPermaLink="true">https://iamthinkking.github.io/2017/01/10/Fedora25-Synapse-and-Your-Display-Server.html</guid><category><![CDATA[fedora]]></category><category><![CDATA[ linux]]></category><category><![CDATA[ synapse]]></category><category><![CDATA[ launcher]]></category><category><![CDATA[ solution]]></category><category><![CDATA[ terminal]]></category><category><![CDATA[ display]]></category><category><![CDATA[ wayland]]></category><category><![CDATA[ Xorg]]></category><dc:creator><![CDATA[Christopher Lee Murray]]></dc:creator><pubDate>Tue, 10 Jan 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Terminal: WiFi Password]]></title><description><![CDATA[<div class="paragraph">
+<div class="sect1">
+<h2 id="_the_solution">The Solution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To SSH into a server, you want to be able to do it as securely as possible, why else would you be using a Secure Socket Shell to interface anything? So both ends of the communication channel need to have a key to state that, indeed, they are who they claim to be. It&#8217;s like entering a secret club but having to say a special phrase first. Both you and the individual behind the door need to know the passphrase. So here&#8217;s how to do that:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Generate an RSA key pair by typing the following at a shell prompt:</p>
+<div class="literalblock">
+<div class="content">
+<pre>~]$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/john/.ssh/id_rsa):</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Press Enter to confirm the default location (that is, ~/.ssh/id_rsa) for the newly created key.
+Enter a passphrase, and confirm it by entering it again when prompted to do so. For security reasons, avoid using the same password as you use to log in to your account.
+After this, you will be presented with a message similar to this:</p>
+<div class="literalblock">
+<div class="content">
+<pre>Your identification has been saved in /home/john/.ssh/id_rsa.
+Your public key has been saved in /home/john/.ssh/id_rsa.pub.
+The key fingerprint is:
+e7:97:c7:e2:0e:f9:0e:fc:c4:d7:cb:e5:31:11:92:14 john@penguin.example.com
+The key's randomart image is:
++--[ RSA 2048]----+
+|             E.  |
+|            . .  |
+|             o . |
+|              . .|
+|        S .    . |
+|         + o o ..|
+|          * * +oo|
+|           O +..=|
+|           o*  o.|
++-----------------+</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Change the permissions of the ~/.ssh/ directory:
+<code>`
+~]$ chmod 755 ~/.ssh
+</code>`</p>
+</li>
+<li>
+<p>Copy the content of ~/.ssh/id_rsa.pub into the ~/.ssh/authorized_keys on the machine to which you want to connect, appending it to its end if the file already exists.</p>
+</li>
+<li>
+<p>Change the permissions of the ~/.ssh/authorized_keys file using the following command:
+<code>`
+~]$ chmod 644 ~/.ssh/authorized_keys
+</code>`</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now that we have generated and shared our SSH key, we will need to install <code>openssh-server</code> on our local machine so port 22 will be opened for us to us as our tunnel of communication.</p>
+</div>
+<div class="paragraph">
+<p><strong>NB: This <code>dnf</code> is for fedora, use <code>apt-get</code> if you&#8217;re on ubuntu:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Installing openSSH Server:</p>
+<div class="literalblock">
+<div class="content">
+<pre>dnf install openssh-server</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check to ensure port 22 is opened</p>
+<div class="literalblock">
+<div class="content">
+<pre>netstat -ant | grep 22</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Time to SSH into our server:</p>
+<div class="literalblock">
+<div class="content">
+<pre>ssh -p 22 [username]@[ip_address]</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now we have successfully SSH&#8217;d into our server @smile😃</p>
+</div>
+<hr>
+<div class="ulist footer">
+<ul class="footer">
+<li>
+<p>This has been tested on fedora 25, using GNOME Boxes, and terminix. There shouldn&#8217;t be any great differences on other platforms/environments.</p>
+</li>
+<li>
+<p>I will do a post about Odoo very soon.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>]]></description><link>https://iamthinkking.github.io/2017/01/10/Dev-Ops-Server-SSH.html</link><guid isPermaLink="true">https://iamthinkking.github.io/2017/01/10/Dev-Ops-Server-SSH.html</guid><category><![CDATA[fedora]]></category><category><![CDATA[ linux]]></category><category><![CDATA[ sysadmin]]></category><category><![CDATA[ administrator]]></category><category><![CDATA[ devops]]></category><category><![CDATA[ ssh]]></category><category><![CDATA[ secure]]></category><category><![CDATA[ systemadministrator]]></category><dc:creator><![CDATA[Christopher Lee Murray]]></dc:creator><pubDate>Tue, 10 Jan 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Terminal: WiFi Password]]></title><description><![CDATA[<div class="paragraph">
 <p>As a budding Linux Engineer I have found that the command line is often a very useful tool. You can get information faster and with greater detail. Often times for the information needed, there is no app with a GUI to provide it. Knowing a decent amount of commands, improves performance and efficiency by a great deal.</p>
 </div>
 <div class="paragraph">
