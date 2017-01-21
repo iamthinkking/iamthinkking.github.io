@@ -10,62 +10,94 @@ Unfortunately copying and pasting strings into GNOME Boxes's emulator just wasn'
 
 To SSH into a server, you want to be able to do it as securely as possible, why else would you be using a Secure Socket Shell to interface anything? So both ends of the communication channel need to have a key to state that, indeed, they are who they claim to be. It's like entering a secret club but having to say a special phrase first. Both you and the individual behind the door need to know the passphrase. So here's how to do that:
 
- 1. Generate an RSA key pair by typing the following at a shell prompt:
+* Generate an RSA key pair by typing the following at a shell prompt:
  
-    
-    ~]$ ssh-keygen -t rsa
-    Generating public/private rsa key pair.
-    Enter file in which to save the key (/home/john/.ssh/id_rsa): 
-    
+[[app-listing]]
+[source,shell]
+.in your terminal
+----
+ssh-keygen -t rsa
+ Generating public/private rsa key pair.
+ Enter file in which to save the key (/home/john/.ssh/id_rsa): 
+----
 
- 2. Press Enter to confirm the default location (that is, ~/.ssh/id_rsa) for the newly created key.
+* Press Enter to confirm the default location (that is, ~/.ssh/id_rsa) for the newly created key.
 Enter a passphrase, and confirm it by entering it again when prompted to do so. For security reasons, avoid using the same password as you use to log in to your account.
 After this, you will be presented with a message similar to this:
-    
-    Your identification has been saved in /home/john/.ssh/id_rsa.
-    Your public key has been saved in /home/john/.ssh/id_rsa.pub.
-    The key fingerprint is:
-    e7:97:c7:e2:0e:f9:0e:fc:c4:d7:cb:e5:31:11:92:14 john@penguin.example.com
-    The key's randomart image is:
-    +--[ RSA 2048]----+
-    |             E.  |
-    |            . .  |
-    |             o . |
-    |              . .|
-    |        S .    . |
-    |         + o o ..|
-    |          * * +oo|
-    |           O +..=|
-    |           o*  o.|
-    +-----------------+
-    
-3. Change the permissions of the ~/.ssh/ directory:
-    ```
-    ~]$ chmod 755 ~/.ssh
-    ```
-4. Copy the content of ~/.ssh/id_rsa.pub into the ~/.ssh/authorized_keys on the machine to which you want to connect, appending it to its end if the file already exists.
-5. Change the permissions of the ~/.ssh/authorized_keys file using the following command:
-    ```
-    ~]$ chmod 644 ~/.ssh/authorized_keys
-    ```
+ 
+[[app-listing]]
+[source,shell]
+.in your terminal
+----
+Your identification has been saved in /home/john/.ssh/id_rsa.
+Your public key has been saved in /home/john/.ssh/id_rsa.pub.
+The key fingerprint is:
+e7:97:c7:e2:0e:f9:0e:fc:c4:d7:cb:e5:31:11:92:14 john@penguin.example.com
+The key's randomart image is:
++--[ RSA 2048]----+
+|             E.  |
+|            . .  |
+|             o . |
+|              . .|
+|        S .    . |
+|         + o o ..|
+|          * * +oo|
+|           O +..=|
+|           o*  o.|
++-----------------+
+----
+
+* Change the permissions of the ~/.ssh/ directory:
+
+[[app-listing]]
+[source,shell]
+.in your terminal
+----
+chmod 755 ~/.ssh
+----
+
+* Copy the content of `~/.ssh/id_rsa.pub` into the `~/.ssh/authorized_keys` on the machine to which you want to connect, appending it to its end if the file already exists.
+
+* Change the permissions of the `~/.ssh/authorized_keys` file using the following command:
+
+[[app-listing]]
+[source,shell]
+.in your terminal
+----
+chmod 644 ~/.ssh/authorized_keys
+----
 
 Now that we have generated and shared our SSH key, we will need to install `openssh-server` on our local machine so port 22 will be opened for us to us as our tunnel of communication. 
 
+
+* Installing openSSH Server:
+
+[[app-listing]]
+[source,shell]
+.in your terminal
+----
+dnf install openssh-server
+----
 **NB: This `dnf` is for fedora, use `apt-get` if you're on ubuntu:**
+    
+* Check to ensure port 22 is opened
 
- 1. Installing openSSH Server:
-    
-    dnf install openssh-server
-    
-    
- 2. Check to ensure port 22 is opened
-    
-    netstat -ant | grep 22
+[[app-listing]]
+[source,shell]
+.in your terminal
+----
+netstat -ant | grep 22
+----
 
- 3. Time to SSH into our server:
+* Time to SSH into our server:
  
-     ssh -p 22 [username]@[ip_address]
- 
+[[app-listing]]
+[source,shell]
+.in your terminal
+----
+ssh -p 22 [username]@[ip_address]
+----
+
 Now we have successfully SSH'd into our server @smile😃
 
 
