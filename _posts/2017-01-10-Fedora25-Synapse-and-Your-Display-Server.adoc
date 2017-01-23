@@ -1,0 +1,45 @@
+= Fedora25: Synapse and Your Display Server
+:hp-tags: fedora, linux, synapse, launcher, solution, terminal, display, wayland, Xorg
+
+## The Problem
+
+One of the tools I've constantly used when on a Linux distribution is https://launchpad.net/synapse-project[Synapse]. It's a really fast application launcher. I've tried https://github.com/ManuelSchneid3r/albert[albert] and others but none have pleased me as much. Since I switched to Fedora25 back in December 2016, I've been using GNOME's built in search which resides in the dashboard. It suffices but the rendering required can cause it to be a bit laggy when resources are being hogged (especially by Chome 😢). So I've decided to install Synapse. Unfortunately after installing, it wouldn't launch from the application menu. I opened Terminix and typed `synapse` only to see it crash from a segmentation fault 🤐. I decided to Google search the issue and came across these links:
+
+- https://ask.fedoraproject.org/en/question/98598/i-get-a-segmentation-fault-when-starting-synapse-on-fedora-25-what-to-do/
+- https://www.reddit.com/r/Fedora/comments/5j31sd/synapse_on_fedora_25_fails_with_segmentation/
+- https://bugs.launchpad.net/synapse-project/+bug/1592008
+
+Unfortunately everyone was complaining, but no solution.
+
+## The Solution
+
+I figured it was synapse trying to access memory or a stream that doesn't exist. So I checked `syanpse -h` to see what options are available. One of the options available to use `--display`. You can get synapse to successfully start by the following steps.
+
+ 1. check the location of the displays you have available: `cd /tmp/.X11-unix && for x in X*; do echo ":${x#X}"; done`
+ 2.  then, from the locations listed, try using any as arguments to the `--display` option.
+
+For me, `synapse --display=:0` worked just fine.
+
+**NB: This allows you to manually launch synapse. However, you MAY want to ensure that:**
+
+ 1. When you start synapse from the application menu it launches with the options you desire.
+
+     * append ` --display=:0` to the end of `Exec=synapse` in the file `/usr/share/applications/synapse.desktop`.
+     * You WILL need **sudo** access to do this. *Be mindful of the space in the string you will be appending.*
+
+ 2. If it's autostarted from your startup it is launched with the options you desire.
+     * ensure you have **GNOME Tweak Tool** installed. *Install it using `sudo dnf install gnome-tweak-tool` or install it from the **Software** application*. 
+     * Then navigate: Tweak Tool>Startup Applications>➕. Search for Synapse then click "Add".
+
+ 3. Navigate Settings>Keyboard>➕. Enter Name: "Synapse", Command: "synapse --display=:0", Shortcut: [Whatever keyboard shortcut you desire].
+ 
+This should suffice as a solution until a patch is made.
+
+
+[footer]
+This has been tested on fedora 25. Provide feedback as to whether it works on other distributions that are returning
+```
+[INFO 10:45:12.413170] [synapse-main:266] Starting up...
+[INFO 10:45:12.625883] [synapse-main:208] Binding activation to <Control>space
+[1]    27269 segmentation fault (core dumped)  synapse
+```
